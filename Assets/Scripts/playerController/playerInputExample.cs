@@ -20,13 +20,13 @@ public class playerInputExample : MonoBehaviour
     void Update()
     {
         Vector2 velocity = rb.velocity;
-        if (Input.GetKey(UpKey))
+        if (Input.GetKey(UpKey) && !Input.GetKey(DownKey))
         {
             // transform.position = transform.position + new Vector3(0, MoveSpeed, 0);
             velocity.y = MoveSpeed;
         }
 
-        if (Input.GetKey(DownKey))
+        if (Input.GetKey(DownKey) && !Input.GetKey(UpKey))
         {
             // transform.position = transform.position + new Vector3(0, -MoveSpeed, 0);
             velocity.y = -MoveSpeed;
