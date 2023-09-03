@@ -10,11 +10,15 @@ public class ball : MonoBehaviour
 
     private float y;
     private float x;
+
+    private Vector2 initPos;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         ApplyRandomForce();
+
+        initPos = transform.position;
     }
 
     private void ApplyRandomForce()
@@ -29,13 +33,62 @@ public class ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("TopWall") || collision.gameObject.CompareTag("BottomWall"))
+
+        if (collision.gameObject.CompareTag("TopWall"))
         {
-            Debug.Log("here");
-            y = -y;
-            rb.velocity = new Vector2(rb.velocity.x, y);
+
+            if (y > 0)
+            {
+                y = -y;
+            }
+            rb.velocity = new Vector2(x, y);
+
+        }else if (collision.gameObject.CompareTag("BottomWall"))
+        {
+            if (y < 0)
+            {
+                y = -y;
+            }
+            rb.velocity = new Vector2(x, y);
 
         }
+        else if (collision.gameObject.CompareTag("RightWall"))
+        {
+        
+            GameController.IncrementCatPoints(1);
+            ResetBall();
+        }
+        else if (collision.gameObject.CompareTag("LeftWall"))
+        {
+
+            GameController.IncrementSealPoints(1);
+            ResetBall();
+        }
+        else if (collision.gameObject.CompareTag("Seal"))
+        {
+            if(x > 0)
+            {
+                x = -x;
+                rb.velocity = new Vector2(x, y);
+            }
+        }
+        else if (collision.gameObject.CompareTag("Cat"))
+        {
+            if(x < 0)
+            {
+                x = -x;
+                rb.velocity = new Vector2(x, y);
+            }
+        }
+
+
     }
+
+    private void ResetBall()
+    {
+        transform.position = initPos;
+        ApplyRandomForce();
+    }
+
 
 }
