@@ -8,6 +8,8 @@ TagManager:
   - LeftWall
   - Cat
   - Seal
+  - TopWall
+  - BottomWall
   layers:
   - Default
   - TransparentFX
