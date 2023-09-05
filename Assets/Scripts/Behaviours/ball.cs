@@ -11,6 +11,11 @@ public class ball : MonoBehaviour
     private float y;
     private float x;
 
+    public float minAngle1 = 30f;
+    public float maxAngle1 = 60f;
+    public float minAngle2 = 120f;
+    public float maxAngle2 = 150f;
+
     private Vector2 initPos;
     // Start is called before the first frame update
     void Start()
@@ -23,11 +28,23 @@ public class ball : MonoBehaviour
 
     private void ApplyRandomForce()
     {
-        Vector2 randomDirection = Random.insideUnitCircle.normalized;
+        rb.velocity = new Vector2(0, 0);
+
+        float randomAngle = Random.Range(minAngle1, maxAngle1);
+        if(Random.Range(0, 2) == 1)
+        {
+            randomAngle = Random.Range(minAngle1, maxAngle1);
+        }
+        float radians = Mathf.Deg2Rad * randomAngle;
+        Vector2 randomDirection = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
+
         Vector2 force = randomDirection * Force;
+
+
         rb.AddForce(force, ForceMode2D.Impulse);
         x = rb.velocity.x;
         y = rb.velocity.y;
+
 
     }
 
