@@ -17,9 +17,16 @@ public class ball : MonoBehaviour
     public float maxAngle2 = 150f;
 
     private GameController gc;
+    public static ball Instance;
 
     private Vector2 initPos;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -73,44 +80,53 @@ public class ball : MonoBehaviour
             gc.IncrementSealPoints(1);
             ResetBall();
         }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
 
         if (collision.gameObject.CompareTag("TopWall"))
         {
 
-            if (y > 0)
+            if (rb.velocity.y > 0)
             {
-                y = -y;
+                rb.velocity = new Vector2(x, -rb.velocity.y);
+                Debug.Log("top");
             }
-            rb.velocity = new Vector2(x, y);
-
-        }else if (collision.gameObject.CompareTag("BottomWall"))
-        {
-            if (y < 0)
-            {
-                y = -y;
-            }
-            rb.velocity = new Vector2(x, y);
 
         }
+        else if (collision.gameObject.CompareTag("BottomWall"))
+        {
+            if (rb.velocity.y < 0)
+            {
+                rb.velocity = new Vector2(x, -rb.velocity.y);
+                Debug.Log("bottom");
 
-        else if (collision.gameObject.CompareTag("Seal"))
+            }
+
+        }
+    }
+
+    public static void InvertBallX(float yVel, float strength)
+    {
+
+        Instance.x = -Instance.x;
+        Instance.rb.velocity = new Vector2(Instance.x + strength, yVel);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+        if (collision.gameObject.CompareTag("Seal"))
         {
             if(x > 0)
             {
-                x = -x;
-                rb.velocity = new Vector2(x, y);
+                InvertBallX(collision.gameObject.GetComponent<Rigidbody2D>().velocity.y, 0f);
             }
         }
         else if (collision.gameObject.CompareTag("Cat"))
         {
             if(x < 0)
             {
-                x = -x;
-                rb.velocity = new Vector2(x, y);
+                InvertBallX(collision.gameObject.GetComponent<Rigidbody2D>().velocity.y, 0f);
+
+
             }
         }
 
