@@ -1,29 +1,46 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-public static class GameController
+public class GameController: MonoBehaviour
 {
-    private static int catPoints = 0;
-    private static int sealPoints = 0;
+    private int catPoints = 0;
+    private int sealPoints = 0;
 
-    public static int CatPoints
+    public Text catDisplay;
+    public Text sealDisplay;
+
+
+
+    public int CatPoints
     {
         get { return catPoints; }
+        set { catDisplay.text = value.ToString(); }
+
     }
 
-    public static int SealPoints
+    public int SealPoints
     {
         get { return sealPoints; }
+        set {
+            sealDisplay.text = value.ToString();
+
+        }
     }
 
-    public static void IncrementCatPoints(int amount)
+    public void IncrementCatPoints(int amount)
     {
         catPoints += amount;
+        catDisplay.text = catPoints.ToString();
+
+
         Debug.Log("Cat points: " + CatPoints);
     }
 
-    public static void IncrementSealPoints(int amount)
+    public void IncrementSealPoints(int amount)
     {
         sealPoints += amount;
+        sealDisplay.text = sealPoints.ToString();
+
         Debug.Log("Seal points: " + SealPoints);
 
     }
