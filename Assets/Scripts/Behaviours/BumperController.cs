@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class BumperController : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class BumperController : MonoBehaviour
     public static int numRounds = 0;
     public int numRoundsToSwap = 3;
 
+    public Text roundsDis;
+
     void Start()
     {
         I = this;
@@ -21,8 +25,12 @@ public class BumperController : MonoBehaviour
 
     public static void SpawnRandomObs()
     {
-        if (numRounds - 1 % I.numRoundsToSwap == 0 && numRounds != 0)
+        numRounds++;
+        I.roundsDis.text = numRounds.ToString();
+        Debug.Log("numRounds: " + numRounds.ToString());
+        if (numRounds  % I.numRoundsToSwap == 0 && numRounds != 0)
         {
+            Debug.Log("here");
             if (I.spawnedObjects != null) Cleanup();
 
             // Generate a random number of prefabs to spawn
@@ -35,14 +43,15 @@ public class BumperController : MonoBehaviour
             for (int i = 0; i < spawnCount; i++)
             {
                 // Calculate a random position within the screen boundaries
-                Vector3 spawnPosition = new Vector3(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height), 4f);
+                Vector3 spawnPosition = new Vector3(Random.Range(300f, Screen.width - 300), Random.Range(300f, Screen.height-300), 4f);
                 spawnPosition = Camera.main.ScreenToWorldPoint(spawnPosition);
 
                 // Spawn the prefab at the random position and store it in the array
                 I.spawnedObjects[i] = Instantiate(I.prefabToSpawn, spawnPosition, Quaternion.identity);
             }
         }
-        numRounds++;
+
+
     }
     // Add a method to perform cleanup when needed
     public static void Cleanup()

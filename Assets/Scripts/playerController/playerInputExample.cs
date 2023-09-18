@@ -5,6 +5,7 @@ using UnityEngine;
 public class playerInputExample : MonoBehaviour
 {
     public float MoveSpeed = 0.5f;
+    public float defaultStrength = 5f;
     public float WhackStrength = 15f;
     public int WhackDirection = 1;
 
