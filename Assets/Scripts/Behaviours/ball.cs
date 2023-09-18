@@ -6,6 +6,8 @@ public class ball : MonoBehaviour
 {
 
     public float Force = 5.0f;
+    public float BumperForceMod = 2;
+    public float DelayTime = 0.5f;
     private Rigidbody2D rb;
 
     private float y;
@@ -30,7 +32,7 @@ public class ball : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        ApplyRandomForce();
+        StartCoroutine(ApplyRandomForce());
 
         initPos = transform.position;
 
@@ -38,8 +40,10 @@ public class ball : MonoBehaviour
         
     }
 
-    private void ApplyRandomForce()
+
+    private IEnumerator ApplyRandomForce()
     {
+        yield return new WaitForSeconds(DelayTime);
         rb.velocity = new Vector2(0, 0);
 
         float randomAngle = Random.Range(minAngle1, maxAngle1);
@@ -86,7 +90,7 @@ public class ball : MonoBehaviour
 
             if (rb.velocity.y > 0)
             {
-                rb.velocity = new Vector2(x, -rb.velocity.y);
+                rb.velocity = new Vector2(rb.velocity.x, -rb.velocity.y);
                 Debug.Log("top");
             }
 
@@ -95,10 +99,22 @@ public class ball : MonoBehaviour
         {
             if (rb.velocity.y < 0)
             {
-                rb.velocity = new Vector2(x, -rb.velocity.y);
+                rb.velocity = new Vector2(rb.velocity.x, -rb.velocity.y);
                 Debug.Log("bottom");
 
             }
+
+        }
+        else if (collision.gameObject.CompareTag("Bumper"))
+        {
+            Debug.Log("Bumper");
+            Vector3 direction = transform.position - collision.gameObject.transform.position;
+            direction.Normalize();
+
+            Vector2 force = (Force + BumperForceMod) * direction;
+
+
+            rb.AddForce(force, ForceMode2D.Impulse);
 
         }
     }
@@ -112,7 +128,7 @@ public class ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
+
         if (collision.gameObject.CompareTag("Seal"))
         {
             if(x > 0)
@@ -131,12 +147,14 @@ public class ball : MonoBehaviour
         }
 
 
+
     }
 
     private void ResetBall()
     {
         transform.position = initPos;
-        ApplyRandomForce();
+        rb.velocity = Vector3.zero;
+        StartCoroutine(ApplyRandomForce());
     }
 
 

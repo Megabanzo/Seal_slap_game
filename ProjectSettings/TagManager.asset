@@ -11,6 +11,7 @@ TagManager:
   - TopWall
   - BottomWall
   - Ball
+  - Bumper
   layers:
   - Default
   - TransparentFX

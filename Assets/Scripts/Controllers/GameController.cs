@@ -11,6 +11,7 @@ public class GameController: MonoBehaviour
 
 
 
+
     public int CatPoints
     {
         get { return catPoints; }
@@ -31,7 +32,7 @@ public class GameController: MonoBehaviour
     {
         catPoints += amount;
         catDisplay.text = catPoints.ToString();
-
+        BumperController.SpawnRandomObs();
 
         Debug.Log("Cat points: " + CatPoints);
     }
@@ -40,6 +41,8 @@ public class GameController: MonoBehaviour
     {
         sealPoints += amount;
         sealDisplay.text = sealPoints.ToString();
+        BumperController.SpawnRandomObs();
+
 
         Debug.Log("Seal points: " + SealPoints);
 
