@@ -13,16 +13,21 @@ public class playerInputExample : MonoBehaviour
     public KeyCode DownKey = KeyCode.DownArrow;
     public KeyCode WhackKey = KeyCode.E;
 
+    public Sprite[] sprites;
+
     public GameObject WhackZone;
 
     private Rigidbody2D rb;
 
     public LayerMask CheckLayer;
 
+    private SpriteRenderer sr;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -46,6 +51,7 @@ public class playerInputExample : MonoBehaviour
 
         if (Input.GetKey(WhackKey))
         {
+            sr.sprite = sprites[2];
             foreach (Collider2D col in collidersInArea)
             {
                 Debug.Log(col.tag);
@@ -55,6 +61,15 @@ public class playerInputExample : MonoBehaviour
                     Debug.Log("whack");
                 }
             }
+        }
+
+        else if (Input.GetKeyUp(WhackKey))
+        {
+            sr.sprite = sprites[1];
+        }
+        else
+        {
+            sr.sprite = sprites[0];
         }
 
         rb.velocity = velocity;

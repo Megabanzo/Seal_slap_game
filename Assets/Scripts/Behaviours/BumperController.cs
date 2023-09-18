@@ -10,28 +10,38 @@ public class BumperController : MonoBehaviour
 
     private GameObject[] spawnedObjects;
 
+    public Sprite[] bgs;
+
     public static BumperController I;
 
     public static int numRounds = 0;
     public int numRoundsToSwap = 3;
+    public Image background;
 
     public Text roundsDis;
 
     void Start()
     {
         I = this;
+        switchbg();
     }
 
-
+    public static void switchbg()
+    {
+        Debug.Log("this");
+        int index = Random.Range(0, I.bgs.Length - 1);
+        I.background.sprite = I.bgs[index];
+    }
     public static void SpawnRandomObs()
     {
         numRounds++;
         I.roundsDis.text = numRounds.ToString();
-        Debug.Log("numRounds: " + numRounds.ToString());
+
         if (numRounds  % I.numRoundsToSwap == 0 && numRounds != 0)
         {
-            Debug.Log("here");
+
             if (I.spawnedObjects != null) Cleanup();
+            switchbg();
 
             // Generate a random number of prefabs to spawn
             int spawnCount = Random.Range(I.minSpawnCount, I.maxSpawnCount + 1);
