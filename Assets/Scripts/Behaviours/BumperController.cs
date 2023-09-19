@@ -7,7 +7,8 @@ public class BumperController : MonoBehaviour
     public GameObject prefabToSpawn;
     public int minSpawnCount = 1;
     public int maxSpawnCount = 5;
-
+    private static int lastindex = -1;
+    private static int index = -1;
     private GameObject[] spawnedObjects;
 
     public Sprite[] bgs;
@@ -29,9 +30,15 @@ public class BumperController : MonoBehaviour
     public static void switchbg()
     {
         Debug.Log("this");
-        int index = Random.Range(0, I.bgs.Length - 1);
+        while (index == lastindex)
+        {
+            index = Random.Range(0, I.bgs.Length);
+            Debug.Log(index);
+        }
+        lastindex = index;
         I.background.sprite = I.bgs[index];
     }
+
     public static void SpawnRandomObs()
     {
         numRounds++;
